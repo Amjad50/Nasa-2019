@@ -1,5 +1,5 @@
-const START_LOC = [3.119993,101.6543625];
-const START_ZOOM = 17;
+const START_LOC = [3.1101201,101.6642256];
+const START_ZOOM = 15;
 
 (function main() {
   let mymap = L.map("mapid").setView(START_LOC, START_ZOOM);
