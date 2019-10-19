@@ -3,6 +3,7 @@ const START_ZOOM = 17;
 
 (function main() {
   let mymap = L.map("mapid").setView(START_LOC, START_ZOOM);
+  let mymap = L.marker([50.5, 30.5]).addTo(map);;
 
   let tileLayer = L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
