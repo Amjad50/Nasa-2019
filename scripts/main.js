@@ -3,7 +3,8 @@ const START_ZOOM = 17;
 
 (function main() {
   let mymap = L.map("mapid").setView(START_LOC, START_ZOOM);
-  let mymap = L.marker([3.119993,101.6543625]).addTo(mymap);;
+  
+  putPoints(mymap);
 
   let tileLayer = L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -14,5 +15,3 @@ const START_ZOOM = 17;
 
   tileLayer.addTo(mymap);
 })();
-//Radwan Wlad Elhaj
-// Github @radwanbj
