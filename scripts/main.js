@@ -1,4 +1,4 @@
-const START_LOC = [3.1101201,101.6642256];
+const START_LOC = [40.2287, -96.9807];
 const START_ZOOM = 15;
 
 (function main() {
