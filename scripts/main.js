@@ -1,4 +1,5 @@
 const START_LOC = [40.2287, -96.9807];
+// [36.2854, -98.9903];
 const START_ZOOM = 15;
 
 (function main() {
@@ -8,9 +9,10 @@ const START_ZOOM = 15;
   addLegend(mymap);
 
   let tileLayer = L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}",
+    // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
-      maxZoom: 19
+      maxZoom: 16
     }
   );
 
