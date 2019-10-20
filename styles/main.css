@@ -8,9 +8,11 @@
   display: block;
   position: absolute;
   border-radius: 3rem 3rem 0;
+  top: -6px;
+  left: -3px;
 }
 
-.pin{
+.pin {
   width: 3rem;
   height: 3rem;
   display: block;
@@ -19,7 +21,7 @@
   position: absolute;
   border-radius: 3rem 3rem 0;
   transform: rotate(45deg);
-  border: 1px solid #FFFFFF
+  border: 1px solid #ffffff;
 }
 
 .circle {
