@@ -17,6 +17,10 @@ const START_ZOOM = 15;
   );
 
   tileLayer.addTo(mymap);
+
+  mymap.on("click", function(e) {
+    console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
+  });
 })();
 
 function addLegend(map) {
