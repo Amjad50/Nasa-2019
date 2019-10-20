@@ -205,6 +205,8 @@ function putPoints(map) {
     pString += `<tr><td><b>SISS</b></td> <td>${SISS}</td></tr>`;
     pString += `<tr><td><b>SIpH</b></td> <td>${SIpH}</td></tr>`;
     pString += `</table>`;
+    pString += `<br>`
+    pString += `<footer><strong>*</strong> ${getComment(WQI, params)}</footer>`
 
     let marker = L.marker(point[1], {
       icon: icon
