@@ -1,11 +1,11 @@
 function generateRandomParams() {
   return [
-    /*DO*/ Math.random() * (10 - 1) + 1,
+    /*DO*/ Math.random() * (92 - 80) + 80,
     /*BOD*/ Math.random() * (15 - 1) + 1,
     /*COD*/ Math.random() * (105 - 5) + 5,
-    /*AN*/ Math.random() * (3 - 0.1) + 0.1,
-    /*SS*/ Math.random() * (310 - 20) + 20,
-    /*pH*/ Math.random() * (9 - 4) + 4
+    /*AN*/ Math.random() * (4 - 0.4) + 0.4,
+    /*SS*/ Math.random() * (110 - 20) + 20,
+    /*pH*/ Math.random() * (9 - 7) + 7,
   ];
 }
 
@@ -131,6 +131,11 @@ function populateCanvas(chartId, data) {
   }
 }
 
+/**
+ * Get colour and name of the danger, based on the legend
+ * 
+ * @param {double} WQI 
+ */
 function getDangerMode(WQI) {
   if (WQI > 90) return { colour: "#009966", string: "Very Clean" };
   else if (WQI > 75 && WQI <= 90) return { colour: "#5e9900", string: "Clean" };
@@ -141,6 +146,12 @@ function getDangerMode(WQI) {
   else return { colour: "#660099", string: "Very Polluted" };
 }
 
+/**
+ * Create a custom Icon based on the WQI, and colour
+ * 
+ * @param {string_colour} colour 
+ * @param {double} WQI 
+ */
 function getIcon(colour, WQI) {
   const markerHtmlStyles = `
   background-color: ${colour};`;
@@ -164,7 +175,11 @@ function putPoints(map) {
   let counter = 0;
   data.points.forEach(point => {
     let chartId = "wqi" + counter++;
-    let data = generateRandomParams();
+    let data;
+    if (point.length == 2)
+      data = generateRandomParams();
+    else
+      data = point[2];
 
     let params = computeWQIParams(data);
     let WQI = computeWQI(params);
@@ -180,15 +195,15 @@ function putPoints(map) {
     const icon = getIcon(colour, WQI);
 
     let pString = "";
-    pString += `<h3>${point[0]}</h3>`;
-    pString += `<strong>Water Quality Index: <span style="background-color:${colour};padding:4px;color:${WQI > 45 && WQI <= 75 ? "black": "white"}">${WQI.toPrecision(5)}</span></strong>`
-    pString += `<table>`;
-    pString += `<tr><td>SIDO</td> <td>${SIDO}</td></tr>`;
-    pString += `<tr><td>SIBOD</td> <td>${SIBOD}</td></tr>`;
-    pString += `<tr><td>SICOD</td> <td>${SICOD}</td></tr>`;
-    pString += `<tr><td>SIAN</td> <td>${SIAN}</td></tr>`;
-    pString += `<tr><td>SISS</td> <td>${SISS}</td></tr>`;
-    pString += `<tr><td>SIpH</td> <td>${SIpH}</td></tr>`;
+    pString += `<h2>${point[0]}</h2>`;
+    pString += `<h3>Water Quality Index: <span style="background-color:${colour};padding:4px;color:${WQI > 45 && WQI <= 75 ? "black": "white"}">${WQI.toPrecision(5)}<br>${string}</span></h3>`
+    pString += `<table style="font-size:1.2em;">`;
+    pString += `<tr><td><b>SIDO</b></td> <td>${SIDO}</td></tr>`;
+    pString += `<tr><td><b>SIBOD</b></td> <td>${SIBOD}</td></tr>`;
+    pString += `<tr><td><b>SICOD</b></td> <td>${SICOD}</td></tr>`;
+    pString += `<tr><td><b>SIAN</b></td> <td>${SIAN}</td></tr>`;
+    pString += `<tr><td><b>SISS</b></td> <td>${SISS}</td></tr>`;
+    pString += `<tr><td><b>SIpH</b></td> <td>${SIpH}</td></tr>`;
     pString += `</table>`;
 
     let marker = L.marker(point[1], {
