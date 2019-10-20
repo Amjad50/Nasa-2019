@@ -79,6 +79,79 @@ function computeWQI(data) {
   );
 }
 
+// FIXME: did not work, either use it or remove it
+function populateCanvas(chartId, data) {
+  let chart = new CanvasJS.Chart(chartId, {
+    animationEnabled: true,
+    // title: {
+    //   text: "Evening Sales in a Restaurant"
+    // },
+    // axisX: {
+    //   valueFormatString: "DDD"
+    // },
+    axisY: {
+      suffix: "%"
+    },
+    toolTip: {
+      shared: true
+    },
+    legend: {
+      cursor: "pointer",
+      itemclick: toggleDataSeries
+    },
+    data: [
+      {
+        type: "stackedBar",
+        name: "Meals",
+        showInLegend: "true",
+        xValueFormatString: "DD, MMM",
+        yValueFormatString: "$#,##0",
+        dataPoints: [
+          { x: new Date(2017, 0, 30), y: 56 },
+          { x: new Date(2017, 0, 31), y: 45 },
+          { x: new Date(2017, 1, 1), y: 71 },
+          { x: new Date(2017, 1, 2), y: 41 },
+          { x: new Date(2017, 1, 3), y: 60 },
+          { x: new Date(2017, 1, 4), y: 75 },
+          { x: new Date(2017, 1, 5), y: 98 }
+        ]
+      }
+    ]
+  });
+  chart.render();
+  console.log(chart);
+
+  function toggleDataSeries(e) {
+    if (typeof e.dataSeries.visible === "undefined" || e.dataSeries.visible) {
+      e.dataSeries.visible = false;
+    } else {
+      e.dataSeries.visible = true;
+    }
+    chart.render();
+  }
+}
+
+function getDangerMode(WQI) {
+  if (WQI > 90) return { colour: "#009966", string: "Very Clean" };
+  else if (WQI > 75 && WQI <= 90) return { colour: "#5e9900", string: "Clean" };
+  else if (WQI > 45 && WQI <= 75) return { colour: "#ffde33", string: "Moderate" };
+  else if (WQI > 20 && WQI <= 45) return { colour: "#cc0033", string: "Polluted" };
+  else return { colour: "#660099", string: "Very Polluted" };
+}
+
+function getIcon(colour, WQI) {
+  const markerHtmlStyles = `
+  background-color: ${colour};`;
+
+  return L.divIcon({
+    className: "my-custom-pin",
+    iconAnchor: [0, 24],
+    labelAnchor: [-6, 0],
+    popupAnchor: [0, -36],
+    html: `<span style="${markerHtmlStyles}" class="pin"></span><span class="defaultspan">${WQI.toFixed()}</span>`
+  });
+}
+
 /**
  * get and format the data from data.js
  *
@@ -86,19 +159,32 @@ function computeWQI(data) {
  * @param {Leaflet map} map
  */
 function putPoints(map) {
+  let counter = 0;
   data.points.forEach(point => {
+    let chartId = "wqi" + counter++;
     let data = generateRandomParams();
 
     let params = computeWQIParams(data);
     let WQI = computeWQI(params);
 
     let pString = "";
+    pString += `<canvas id="${chartId}"></canvas>\n`;
     pString += `WQI = ${WQI}\n`;
 
-    L.marker(point[1], {
-      /* icon: default*/
+    const { colour, string } = getDangerMode(WQI);
+    const icon = getIcon(colour, WQI);
+
+    let marker = L.marker(point[1], {
+      icon: icon
     })
       .bindPopup(pString)
       .addTo(map);
+    marker._params = params;
+    marker._chartId = chartId;
+  });
+
+  map.on("popupopen", e => {
+    let s = e.popup._source;
+    // populateCanvas(s._chartId, s._params);
   });
 }
