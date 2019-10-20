@@ -1,5 +1,7 @@
 #mapid {
-  height: 50vh;
+  height: 90vh;
+  width: 95vw;
+  margin: auto;
 }
 
 .defaultspan {
@@ -18,4 +20,11 @@
   border-radius: 3rem 3rem 0;
   transform: rotate(45deg);
   border: 1px solid #FFFFFF
+}
+
+.circle {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
 }
