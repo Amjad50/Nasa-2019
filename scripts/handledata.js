@@ -134,8 +134,10 @@ function populateCanvas(chartId, data) {
 function getDangerMode(WQI) {
   if (WQI > 90) return { colour: "#009966", string: "Very Clean" };
   else if (WQI > 75 && WQI <= 90) return { colour: "#5e9900", string: "Clean" };
-  else if (WQI > 45 && WQI <= 75) return { colour: "#ffde33", string: "Moderate" };
-  else if (WQI > 20 && WQI <= 45) return { colour: "#cc0033", string: "Polluted" };
+  else if (WQI > 45 && WQI <= 75)
+    return { colour: "#ffde33", string: "Moderate" };
+  else if (WQI > 20 && WQI <= 45)
+    return { colour: "#cc0033", string: "Polluted" };
   else return { colour: "#660099", string: "Very Polluted" };
 }
 
@@ -148,7 +150,7 @@ function getIcon(colour, WQI) {
     iconAnchor: [0, 24],
     labelAnchor: [-6, 0],
     popupAnchor: [0, -36],
-    html: `<span style="${markerHtmlStyles}" class="pin"></span><span class="defaultspan">${WQI.toFixed()}</span>`
+    html: `<span style="${markerHtmlStyles}" class="pin"></span><span class="defaultspan" style="color:${WQI > 45 && WQI <= 75 ? "black": "white"}">${WQI.toFixed()}</span>`
   });
 }
 
@@ -167,12 +169,27 @@ function putPoints(map) {
     let params = computeWQIParams(data);
     let WQI = computeWQI(params);
 
-    let pString = "";
-    pString += `<canvas id="${chartId}"></canvas>\n`;
-    pString += `WQI = ${WQI}\n`;
+    let SIDO = params.SIDO.toPrecision(3),
+    SIBOD = params.SIBOD.toPrecision(3),
+    SICOD = params.SICOD.toPrecision(3),
+    SIAN = params.SIAN.toPrecision(3),
+    SISS = params.SISS.toPrecision(3),
+    SIpH = params.SIpH.toPrecision(3);
 
     const { colour, string } = getDangerMode(WQI);
     const icon = getIcon(colour, WQI);
+
+    let pString = "";
+    pString += `<h3>${point[0]}</h3>`;
+    pString += `<strong>Water Quality Index: <span style="background-color:${colour};padding:4px;color:${WQI > 45 && WQI <= 75 ? "black": "white"}">${WQI.toPrecision(5)}</span></strong>`
+    pString += `<table>`;
+    pString += `<tr><td>SIDO</td> <td>${SIDO}</td></tr>`;
+    pString += `<tr><td>SIBOD</td> <td>${SIBOD}</td></tr>`;
+    pString += `<tr><td>SICOD</td> <td>${SICOD}</td></tr>`;
+    pString += `<tr><td>SIAN</td> <td>${SIAN}</td></tr>`;
+    pString += `<tr><td>SISS</td> <td>${SISS}</td></tr>`;
+    pString += `<tr><td>SIpH</td> <td>${SIpH}</td></tr>`;
+    pString += `</table>`;
 
     let marker = L.marker(point[1], {
       icon: icon
